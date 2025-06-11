@@ -1,1 +1,2 @@
+# rootディレクトリからのパス指定のため、./js~は不可！！
 js/firebaseConfig.js
