@@ -12,6 +12,11 @@ let canvas,
   isDrawing = false;
 let db; // Firestoreデータベース
 
+// 描画設定
+let currentColor = "#000000";
+let currentSize = 5;
+let isEraser = false;
+
 // 描画機能の初期化関数
 export function initDrawing(database) {
   db = database;
@@ -33,13 +38,24 @@ export function initDrawing(database) {
 // キャンバスの初期設定
 function setupCanvas() {
   // 線の設定
-  ctx.strokeStyle = "#000000"; // 黒色
-  ctx.lineWidth = 2; // 線の太さ
+  updateCanvasSettings();
   ctx.lineCap = "round"; // 線の端を丸く
 
   // レスポンシブ対応
   resizeCanvas();
   window.addEventListener("resize", resizeCanvas);
+}
+
+// キャンバスの描画設定を更新
+function updateCanvasSettings() {
+  if (isEraser) {
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.lineWidth = currentSize * 2; // 消しゴムは太めに
+  } else {
+    ctx.globalCompositeOperation = "source-over";
+    ctx.strokeStyle = currentColor;
+    ctx.lineWidth = currentSize;
+  }
 }
 
 // キャンバスのリサイズ処理
@@ -69,11 +85,93 @@ function setupEventListeners() {
   // ボタンイベント
   document.getElementById("clearBtn").addEventListener("click", clearCanvas);
   document.getElementById("saveBtn").addEventListener("click", saveDrawing);
+
+  // 描画ツールイベント
+  setupDrawingToolEvents();
+}
+
+// 描画ツールのイベントリスナー設定
+function setupDrawingToolEvents() {
+  // カラーピッカー
+  const colorPicker = document.getElementById("colorPicker");
+
+  colorPicker.addEventListener("input", (e) => {
+    currentColor = e.target.value;
+    isEraser = false;
+    updateToolStates();
+    updateCanvasSettings();
+  });
+
+  // サイズスライダー
+  const sizeSlider = document.getElementById("sizeSlider");
+  const sizeValue = document.getElementById("sizeValue");
+
+  sizeSlider.addEventListener("input", (e) => {
+    currentSize = parseInt(e.target.value);
+    sizeValue.textContent = currentSize;
+    updateSizePreview();
+    updateCanvasSettings();
+  });
+
+  // 初期サイズプレビューを設定
+  updateSizePreview();
+
+  // ペン/消しゴム切り替え
+  document.getElementById("penBtn").addEventListener("click", () => {
+    isEraser = false;
+    updateToolStates();
+    updateCanvasSettings();
+  });
+
+  document.getElementById("eraserBtn").addEventListener("click", () => {
+    isEraser = true;
+    updateToolStates();
+    updateCanvasSettings();
+  });
+}
+
+// サイズプレビューの更新
+function updateSizePreview() {
+  const sizePreview = document.getElementById("sizePreview");
+
+  // プレビュー用のドットを作成/更新
+  if (!sizePreview.querySelector(".size-dot")) {
+    const dot = document.createElement("div");
+    dot.className = "size-dot";
+    sizePreview.appendChild(dot);
+  }
+
+  const dot = sizePreview.querySelector(".size-dot");
+  dot.style.cssText = `
+    width: ${currentSize}px;
+    height: ${currentSize}px;
+    background-color: ${isEraser ? "#ff6b6b" : currentColor};
+    border-radius: 50%;
+    transition: all 0.2s;
+  `;
+}
+
+// ツールの状態表示を更新
+function updateToolStates() {
+  const penBtn = document.getElementById("penBtn");
+  const eraserBtn = document.getElementById("eraserBtn");
+
+  if (isEraser) {
+    penBtn.classList.remove("active");
+    eraserBtn.classList.add("active");
+  } else {
+    penBtn.classList.add("active");
+    eraserBtn.classList.remove("active");
+  }
+
+  // プレビューも更新
+  updateSizePreview();
 }
 
 // 描画開始
 function startDrawing(e) {
   isDrawing = true;
+  updateCanvasSettings(); // 現在の設定を適用
   const coords = getCanvasCoordinates(e);
   ctx.beginPath();
   ctx.moveTo(coords.x, coords.y);
