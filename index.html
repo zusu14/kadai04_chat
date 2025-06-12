@@ -15,6 +15,42 @@
       /></label>
     </div>
 
+    <!-- 描画ツール -->
+    <div class="drawing-tools">
+      <!-- 色選択 -->
+      <div class="tool-group">
+        <label for="colorPicker">色:</label>
+        <input type="color" id="colorPicker" value="#000000" title="色を選択" />
+      </div>
+
+      <!-- 太さ選択 -->
+      <div class="tool-group">
+        <label for="sizeSlider">太さ: <span id="sizeValue">5</span>px</label>
+        <div class="size-control">
+          <input
+            type="range"
+            id="sizeSlider"
+            min="1"
+            max="20"
+            value="5"
+            title="線の太さ"
+          />
+          <div class="size-preview" id="sizePreview"></div>
+        </div>
+      </div>
+
+      <!-- ペン/消しゴム -->
+      <div class="tool-group">
+        <!-- <label>ツール:</label> -->
+        <div class="tool-buttons">
+          <button id="penBtn" class="tool-btn active" title="ペン">ペン</button>
+          <button id="eraserBtn" class="tool-btn" title="消しゴム">
+            消しゴム
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="canvas-container">
       <canvas id="drawingCanvas" width="800" height="600"></canvas>
     </div>

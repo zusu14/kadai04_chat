@@ -86,6 +86,160 @@ button {
   margin: 10px 0;
 }
 
+/* 描画ツール */
+.drawing-tools {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 800px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-around;
+  gap: 30px;
+}
+
+.tool-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 120px;
+  max-width: 200px;
+}
+
+.tool-group label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* 色選択 */
+#colorPicker {
+  width: 60px;
+  height: 50px;
+  border: 3px solid #ddd;
+  border-radius: 12px;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+  transition: all 0.2s;
+}
+
+#colorPicker:hover {
+  border-color: #4caf50;
+  transform: scale(1.05);
+}
+
+/* サイズ選択 */
+.size-control {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+#sizeSlider {
+  width: 100px;
+  height: 6px;
+  border-radius: 3px;
+  background: #ddd;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+#sizeSlider:hover {
+  background: #ccc;
+}
+
+#sizeSlider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4caf50;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#sizeSlider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4caf50;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.size-preview {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  background-color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.size-dot {
+  transition: all 0.2s;
+}
+
+#sizeValue {
+  font-weight: bold;
+  color: #4caf50;
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+/* ツールボタンコンテナ */
+.tool-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* ツールボタン */
+.tool-btn {
+  padding: 8px 16px;
+  border: 2px solid #ddd;
+  background-color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 13px;
+  font-weight: 500;
+  min-width: 70px;
+  flex: 1;
+}
+
+.tool-btn:hover {
+  border-color: #999;
+  background-color: #f5f5f5;
+  transform: translateY(-1px);
+}
+
+.tool-btn.active {
+  border-color: #2196f3;
+  background-color: #2196f3;
+  color: white;
+  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+}
+
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
   body {
@@ -95,6 +249,39 @@ button {
   h1 {
     font-size: 24px;
     margin: 10px 0;
+  }
+
+  .drawing-tools {
+    padding: 15px;
+    gap: 15px;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .tool-group {
+    min-width: 100px;
+    flex: 1;
+    max-width: 150px;
+  }
+
+  #colorPicker {
+    width: 80px;
+    height: 60px;
+  }
+
+  #sizeSlider {
+    width: 120px;
+  }
+
+  .size-preview {
+    width: 35px;
+    height: 35px;
+  }
+
+  .tool-btn {
+    padding: 10px 16px;
+    font-size: 14px;
+    min-width: 70px;
   }
 
   #drawingCanvas {
@@ -122,6 +309,51 @@ button {
 @media (max-width: 480px) {
   h1 {
     font-size: 20px;
+  }
+
+  .drawing-tools {
+    padding: 10px;
+    gap: 8px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .tool-group {
+    min-width: 80px;
+    flex: 1;
+  }
+
+  .tool-group label {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  #colorPicker {
+    width: 50px;
+    height: 40px;
+  }
+
+  #sizeSlider {
+    width: 70px;
+  }
+
+  #sizeValue {
+    font-size: 12px;
+  }
+
+  .size-preview {
+    width: 30px;
+    height: 30px;
+  }
+
+  .tool-btn {
+    padding: 6px 8px;
+    font-size: 11px;
+    min-width: 45px;
+  }
+
+  .tool-buttons {
+    gap: 4px;
   }
 
   button {
