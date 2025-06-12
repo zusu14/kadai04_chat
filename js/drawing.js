@@ -135,16 +135,7 @@ function displayOtherDrawing(drawingData) {
 function showNotification(message) {
   const notification = document.createElement("div");
   notification.textContent = message;
-  notification.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #4CAF50;
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-      z-index: 1000;
-    `;
+  notification.className = "notification";
   document.body.appendChild(notification);
 
   setTimeout(() => {
