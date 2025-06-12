@@ -3,9 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>なに作ろう</title>
+    <title>お絵描きアプリ</title>
   </head>
   <body>
-    絶賛作成中
+    <h1>お絵描きアプリ</h1>
+    <div>
+      <label
+        >お名前: <input type="text" id="artistName" placeholder="名前を入力"
+      /></label>
+    </div>
+    <canvas id="drawingCanvas" width="800" height="600"></canvas>
+    <div>
+      <button id="clearBtn">クリア</button>
+      <button id="saveBtn">保存</button>
+    </div>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+      import firebaseConfig from "./js/firebaseConfig.js";
+      // Firebase初期化
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // 描画機能をインポートして初期化　動的インポート　非同期処理　Promise処理
+      import("./js/drawing.js").then((module) => {
+        module.initDrawing(db);
+      });
+    </script>
   </body>
 </html>
