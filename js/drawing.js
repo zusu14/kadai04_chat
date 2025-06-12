@@ -3,6 +3,7 @@ import {
   collection,
   addDoc,
   serverTimestamp,
+  onSnapshot,
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
 // グローバル変数
@@ -24,6 +25,9 @@ export function initDrawing(database) {
 
   // イベントリスナーの設定
   setupEventListeners();
+
+  // リアルタイム監視
+  watchForNewDrawings();
 }
 
 // キャンバスの初期設定
@@ -99,4 +103,50 @@ async function saveDrawing() {
     console.error("保存エラー:", error);
     alert("保存に失敗しました");
   }
+}
+// リアルタイム監視
+function watchForNewDrawings() {
+  onSnapshot(collection(db, "drawings"), (snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === "added") {
+        const newDrawing = change.doc.data();
+        if (newDrawing.artistName !== artistName) {
+          displayOtherDrawing(newDrawing);
+        }
+      }
+    });
+  });
+}
+
+function getCurrentUser() {
+  return document.getElementById("artistName").value || "unknown";
+}
+
+function displayOtherDrawing(drawingData) {
+  const img = new Image();
+  img.onload = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0);
+  };
+  img.src = drawingData.imageData;
+}
+
+function showNotification(message) {
+  const notification = document.createElement("div");
+  notification.textContent = message;
+  notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #4CAF50;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 1000;
+    `;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    document.body.removeChild(notification);
+  }, 3000);
 }
