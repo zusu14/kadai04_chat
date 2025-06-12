@@ -3,17 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>お絵描きアプリ</title>
+    <title>イラストシェア</title>
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <h1>お絵描きアプリ</h1>
-    <div>
+    <h1>イラストシェア</h1>
+
+    <div class="controls">
       <label
         >お名前: <input type="text" id="artistName" placeholder="名前を入力"
       /></label>
     </div>
+
     <canvas id="drawingCanvas" width="800" height="600"></canvas>
-    <div>
+
+    <div class="controls">
       <button id="clearBtn">クリア</button>
       <button id="saveBtn">保存</button>
     </div>
