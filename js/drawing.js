@@ -110,7 +110,7 @@ function watchForNewDrawings() {
     snapshot.docChanges().forEach((change) => {
       if (change.type === "added") {
         const newDrawing = change.doc.data();
-        if (newDrawing.artistName !== artistName) {
+        if (newDrawing.artistName !== getCurrentUser()) {
           displayOtherDrawing(newDrawing);
         }
       }
@@ -127,6 +127,7 @@ function displayOtherDrawing(drawingData) {
   img.onload = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, 0, 0);
+    showNotification(`${drawingData.artistName}さんが新しい絵を描きました！`);
   };
   img.src = drawingData.imageData;
 }
