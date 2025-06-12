@@ -36,6 +36,26 @@ function setupCanvas() {
   ctx.strokeStyle = "#000000"; // 黒色
   ctx.lineWidth = 2; // 線の太さ
   ctx.lineCap = "round"; // 線の端を丸く
+
+  // レスポンシブ対応
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
+}
+
+// キャンバスのリサイズ処理
+function resizeCanvas() {
+  const container = canvas.parentElement;
+  const containerWidth = container.clientWidth - 40; // パディング分を引く
+  const maxWidth = 800;
+  const aspectRatio = 600 / 800; // height / width
+
+  if (containerWidth < maxWidth) {
+    canvas.style.width = containerWidth + "px";
+    canvas.style.height = containerWidth * aspectRatio + "px";
+  } else {
+    canvas.style.width = maxWidth + "px";
+    canvas.style.height = maxWidth * aspectRatio + "px";
+  }
 }
 
 // イベントリスナーの設定
@@ -104,6 +124,7 @@ async function saveDrawing() {
     alert("保存に失敗しました");
   }
 }
+
 // リアルタイム監視
 function watchForNewDrawings() {
   onSnapshot(collection(db, "drawings"), (snapshot) => {
@@ -118,10 +139,12 @@ function watchForNewDrawings() {
   });
 }
 
+// 現在のユーザー名取得
 function getCurrentUser() {
   return document.getElementById("artistName").value || "unknown";
 }
 
+// 他ユーザーの描画表示
 function displayOtherDrawing(drawingData) {
   const img = new Image();
   img.onload = () => {
@@ -132,6 +155,7 @@ function displayOtherDrawing(drawingData) {
   img.src = drawingData.imageData;
 }
 
+// 通知表示
 function showNotification(message) {
   const notification = document.createElement("div");
   notification.textContent = message;
