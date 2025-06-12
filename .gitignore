@@ -1,3 +1,4 @@
-# rootディレクトリからのパス指定のため、./js~は不可！！
+# rootディレクトリからのパスを指定する。
+# ./は相対パス指定となってしまうため不可！！
 js/firebaseConfig.js
 .vscode/settings.json
