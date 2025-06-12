@@ -74,23 +74,35 @@ function setupEventListeners() {
 // 描画開始
 function startDrawing(e) {
   isDrawing = true;
-  const rect = canvas.getBoundingClientRect();
+  const coords = getCanvasCoordinates(e);
   ctx.beginPath();
-  ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+  ctx.moveTo(coords.x, coords.y);
 }
 
 // 描画中
 function draw(e) {
   if (!isDrawing) return;
 
-  const rect = canvas.getBoundingClientRect();
-  ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+  const coords = getCanvasCoordinates(e);
+  ctx.lineTo(coords.x, coords.y);
   ctx.stroke();
 }
 
 // 描画終了
 function stopDrawing() {
   isDrawing = false;
+}
+
+// キャンバス座標の取得（スケール調整）
+function getCanvasCoordinates(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+
+  return {
+    x: (e.clientX - rect.left) * scaleX,
+    y: (e.clientY - rect.top) * scaleY,
+  };
 }
 
 // キャンバスクリア
