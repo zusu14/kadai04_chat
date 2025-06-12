@@ -3,12 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>イラストシェア</title>
+    <title>Co-Sketch</title>
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <h1>イラストシェア</h1>
-
+    <h1>Co-Sketch</h1>
+    <div class="explanation">
+      <p>
+        複数人で同じキャンバスにスケッチできるアプリです。<br />
+        名前を入力して、スケッチしたら「保存」ボタンを押してください。<br />
+        保存されたら、他の参加者のキャンバスにリアルタイムで反映されます。
+      </p>
+    </div>
     <div class="controls">
       <label
         >お名前: <input type="text" id="artistName" placeholder="名前を入力"
@@ -56,8 +62,8 @@
     </div>
 
     <div class="controls">
-      <button id="clearBtn">クリア</button>
       <button id="saveBtn">保存</button>
+      <button id="clearBtn">クリア</button>
     </div>
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
