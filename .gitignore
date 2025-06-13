@@ -2,3 +2,4 @@
 # ./は相対パス指定となってしまうため不可！！
 js/firebaseConfig.js
 .vscode/settings.json
+.DS_Store
