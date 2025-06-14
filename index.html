@@ -26,6 +26,7 @@
       <!-- 色選択 -->
       <div class="tool-group">
         <label for="colorPicker">色:</label>
+        <!-- カラーピッカー -->
         <input type="color" id="colorPicker" value="#000000" title="色を選択" />
       </div>
 
@@ -71,6 +72,7 @@
       import firebaseConfig from "./js/firebaseConfig.js";
       // Firebase初期化
       const app = initializeApp(firebaseConfig);
+      // Firestoreデータベースのインスタンスを取得
       const db = getFirestore(app);
 
       // 描画機能をインポートして初期化　動的インポート　非同期処理　Promise処理

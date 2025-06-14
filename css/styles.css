@@ -238,6 +238,7 @@ button {
   transform: translateY(-1px);
 }
 
+/* アクティブなツールボタン */
 .tool-btn.active {
   border-color: #2196f3;
   background-color: #2196f3;
