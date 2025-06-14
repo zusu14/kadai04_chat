@@ -1,4 +1,6 @@
 // Firebase Firestoreの関数をインポート
+// CDN(Content Delivery Network)経由で
+// Firebase SDK(Software Development Kit)を読み込み、軽量化
 import {
   collection,
   addDoc,
@@ -10,20 +12,23 @@ import {
 let canvas,
   ctx,
   isDrawing = false;
-let db; // Firestoreデータベース
+let db; // Firestoreデータベースインスタンス
 
 // 描画設定
 let currentColor = "#000000";
 let currentSize = 5;
-let isEraser = false;
+let isEraser = false; // 消しゴムモード用フラグ
 
 // 描画機能の初期化関数
 export function initDrawing(database) {
+  // Firestoreデータベースインスタンスをグローバル変数に代入
   db = database;
 
   // キャンバス要素の取得
+  // Canvas APIの描画処理は、jQueryでは実装できないため、
+  // 今回は全てVanilla JavaScriptで実装
   canvas = document.getElementById("drawingCanvas");
-  ctx = canvas.getContext("2d");
+  ctx = canvas.getContext("2d"); // コンテキスト
 
   // キャンバスの初期設定
   setupCanvas();
@@ -35,7 +40,7 @@ export function initDrawing(database) {
   watchForNewDrawings();
 }
 
-// キャンバスの初期設定
+// キャンバスの初期設定（起動時に1回だけ実行される）
 function setupCanvas() {
   // 線の設定
   updateCanvasSettings();
@@ -49,9 +54,11 @@ function setupCanvas() {
 // キャンバスの描画設定を更新
 function updateCanvasSettings() {
   if (isEraser) {
+    // 消しゴムモード
     ctx.globalCompositeOperation = "destination-out";
     ctx.lineWidth = currentSize * 2; // 消しゴムは太めに
   } else {
+    // ペンモード
     ctx.globalCompositeOperation = "source-over";
     ctx.strokeStyle = currentColor;
     ctx.lineWidth = currentSize;
@@ -92,12 +99,17 @@ function setupEventListeners() {
 
 // 描画ツールのイベントリスナー設定
 function setupDrawingToolEvents() {
-  // カラーピッカー
+  // 初期サイズプレビューを設定
+  updateSizePreview();
+
+  // カラーピッカーのDOM要素取得
   const colorPicker = document.getElementById("colorPicker");
 
+  // カラーピッカーのイベントリスナー
+  // eはEventオブジェクト
   colorPicker.addEventListener("input", (e) => {
     currentColor = e.target.value;
-    isEraser = false;
+    isEraser = false; // 色変更時は自動で消しゴムモードからペンモードに
     updateToolStates();
     updateCanvasSettings();
   });
@@ -106,6 +118,7 @@ function setupDrawingToolEvents() {
   const sizeSlider = document.getElementById("sizeSlider");
   const sizeValue = document.getElementById("sizeValue");
 
+  // サイズスライダーのイベントリスナー
   sizeSlider.addEventListener("input", (e) => {
     currentSize = parseInt(e.target.value);
     sizeValue.textContent = currentSize;
@@ -113,16 +126,14 @@ function setupDrawingToolEvents() {
     updateCanvasSettings();
   });
 
-  // 初期サイズプレビューを設定
-  updateSizePreview();
-
-  // ペン/消しゴム切り替え
+  // ペンボタン
   document.getElementById("penBtn").addEventListener("click", () => {
     isEraser = false;
     updateToolStates();
     updateCanvasSettings();
   });
 
+  // 消しゴムボタン
   document.getElementById("eraserBtn").addEventListener("click", () => {
     isEraser = true;
     updateToolStates();
@@ -156,6 +167,7 @@ function updateToolStates() {
   const penBtn = document.getElementById("penBtn");
   const eraserBtn = document.getElementById("eraserBtn");
 
+  // classListプロパティで、htmlのclassに対して追加/削除を行える
   if (isEraser) {
     penBtn.classList.remove("active");
     eraserBtn.classList.add("active");
@@ -163,9 +175,8 @@ function updateToolStates() {
     penBtn.classList.add("active");
     eraserBtn.classList.remove("active");
   }
-
   // プレビューも更新
-  updateSizePreview();
+  // updateSizePreview();
 }
 
 // 描画開始
